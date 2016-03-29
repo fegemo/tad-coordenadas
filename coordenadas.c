@@ -15,64 +15,81 @@ vetor multiplicaPorEscalar(vetor v, escalar alpha) {
 }
 
 vetor somaVetorComVetor(vetor v, vetor u) {
-  vetor resultado = v;
+  vetor resultado = {
+    v.x + u.x,
+    v.y + u.y,
+    v.z + u.z,
+    v.w + u.w
+  };
   return resultado;
 }
 
 vetor diferencaVetorComVetor(vetor v, vetor u) {
-  vetor resultado = v;
+  vetor uNegado = multiplicaPorEscalar(u, -1);
+  vetor resultado = somaVetorComVetor(v, uNegado);
   return resultado;
 }
 
 vetor diferencaEntrePontos(ponto p, ponto q) {
-  vetor resultado = {0,0,0,0};
+  vetor resultado = diferencaVetorComVetor((vetor)p, (vetor)q);
   return resultado;
 }
 
 ponto somaPontoComVetor(ponto p, vetor v) {
-  ponto resultado = p;
+  ponto resultado = somaVetorComVetor((vetor)p, v);
   return resultado;
 }
 
 escalar normaDoVetor(vetor v) {
-  escalar resultado = 0;
+  escalar resultado = sqrt(
+    pow(v.x,2) + pow(v.y,2) + pow(v.z,2) + pow(v.w,2)
+  );
   return resultado;
 }
 
 vetor normalizado(vetor v) {
-  vetor resultado = v;
+  vetor resultado = multiplicaPorEscalar(v, 1/normaDoVetor(v));
   return resultado;
 }
 
 escalar distanciaEntrePontos(ponto p , ponto q) {
-  escalar resultado = 0;
+  escalar resultado = normaDoVetor(diferencaEntrePontos(p, q));
   return resultado;
 }
 
 escalar produtoEscalar(vetor v, vetor u) {
-  escalar resultado = 1;
+  escalar resultado = sqrt(
+    v.x*u.x + v.y*u.y + v.z*u.z + v.w*u.w
+  );
   return resultado;
 }
 
 vetor produtoVetorial(vetor v, vetor u) {
-  // Produto vetorial só faz sentido em 3D
   // Ignorar a componente "w" de "v" e "u"
   // Como o resultado é um vetor, o "w" dele deve ser 0
-  vetor resultado = v;
+  vetor resultado = {
+    v.y*u.z - v.z*u.y,
+    v.z*u.x - v.x*u.z,
+    v.x*u.y - v.y*u.x,
+    0
+  };
   return resultado;
 }
 
 ///
 /// Referências: http://localhost:8080/classes/geometry/#30
 escalar anguloEntreVetores(vetor v, vetor u) {
-  escalar resultado = 0;
+  vetor vNormalizado = normalizado(v);
+  vetor uNormalizado = normalizado(u);
+  escalar resultado = acos(produtoEscalar(vNormalizado, uNormalizado));
   return resultado;
 }
 
 ///
 /// Referências: http://localhost:8080/classes/geometry/#22
 ponto combinacaoAfim2Pontos(ponto p, ponto q, escalar alpha) {
-  ponto resultado = p;
+  vetor pq = diferencaEntrePontos(q, p);
+  ponto resultado = somaPontoComVetor(p, multiplicaPorEscalar(pq, alpha));
   return resultado;
 }
 
