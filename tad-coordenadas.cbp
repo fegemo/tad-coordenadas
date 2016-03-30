@@ -19,7 +19,11 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="main.c">
+		<Unit filename="coordenadas.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="coordenadas.h" />
+		<Unit filename="teste-coordenadas.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
